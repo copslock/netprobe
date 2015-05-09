@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_window">#FFFFFFFF</color>
+    <color name="background_tab_pressed">#FFC74B46</color>
+    <color name="background_tab">#FFC74B46</color>
+</resources>

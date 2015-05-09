@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jna-platform">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/NetProbe/libs/jna-platform.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

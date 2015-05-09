@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <PreferenceScreen
+        android:id="@+id/test_config"
+        android:key="test_config"
+        android:title="Test Config">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="cycle_test"
+            android:title="Cycle Test" />
+
+        <!--<PreferenceCategory-->
+        <!--android:key="voice_call"-->
+        <!--android:title="Voice">-->
+
+        <!--<EditTextPreference-->
+        <!--android:key="number"-->
+        <!--android:title="Number" />-->
+
+        <!--<EditTextPreference-->
+        <!--android:key="call_time"-->
+        <!--android:title="Call Time" />-->
+
+        <!--<EditTextPreference-->
+        <!--android:key="count"-->
+        <!--android:title="Count" />-->
+
+        <!--<EditTextPreference-->
+        <!--android:key="interval"-->
+        <!--android:title="Interval" />-->
+        <!--</PreferenceCategory>-->
+    </PreferenceScreen>
+</PreferenceScreen>

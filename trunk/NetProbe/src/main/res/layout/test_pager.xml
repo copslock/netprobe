@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ExpandableListView
+        android:id="@+id/expandableListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/darker_gray"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <RadioButton
+            android:id="@+id/radioButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_margin="0.5dp"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:button="@null"
+            android:checked="false"
+            android:drawableTop="@android:drawable/ic_media_play"
+            android:gravity="center"
+            android:text="Test" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_margin="0.5dp"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:button="@null"
+            android:checked="false"
+            android:drawableTop="@android:drawable/ic_menu_set_as"
+            android:gravity="center"
+            android:text="Config" />
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_margin="0.5dp"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:button="@null"
+            android:checked="false"
+            android:drawableTop="@android:drawable/ic_menu_more"
+            android:gravity="center"
+            android:text="More" />
+    </RadioGroup>
+
+</LinearLayout>
