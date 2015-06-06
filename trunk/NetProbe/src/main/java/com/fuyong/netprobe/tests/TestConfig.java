@@ -27,6 +27,11 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class TestConfig {
+    public static final String TAG_WEB_BROWSE = "web-browse";
+    public static final String TAG_VIDEO = "video";
+    public static final String TAG_HTTP_DOWNLOAD = "http-download";
+    public static final String TAG_VOICE = "voice";
+
     String filePath;
     List<Test> testList = new ArrayList<Test>();
     private SAXReader reader = new SAXReader();
@@ -76,19 +81,19 @@ public class TestConfig {
         }
         for (Iterator iter = root.elementIterator(); iter.hasNext(); ) {
             Element element = (Element) iter.next();
-            if (element.getName().equals("voice")) {
+            if (element.getName().equals(TAG_VOICE)) {
                 VoiceTest voiceTest = new VoiceTest();
                 voiceTest.config(element);
                 testList.add(voiceTest);
-            } else if (element.getName().equals("web-browse")) {
+            } else if (element.getName().equals(TAG_WEB_BROWSE)) {
                 WebBrowseTest webBrowseTest = new WebBrowseTest();
                 webBrowseTest.config(element);
                 testList.add(webBrowseTest);
-            } else if (element.getName().equals("video")) {
-                WebVideoTest webVideoTest = new WebVideoTest();
-                webVideoTest.config(element);
-                testList.add(webVideoTest);
-            } else if (element.getName().equals("http-download")) {
+            } else if (element.getName().equals(TAG_VIDEO)) {
+                HTTPVideoTest HTTPVideoTest = new HTTPVideoTest();
+                HTTPVideoTest.config(element);
+                testList.add(HTTPVideoTest);
+            } else if (element.getName().equals(TAG_HTTP_DOWNLOAD)) {
                 HttpDownloadTest httpDownloadTest = new HttpDownloadTest();
                 httpDownloadTest.config(element);
                 testList.add(httpDownloadTest);

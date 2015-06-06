@@ -34,7 +34,7 @@ public class WebBrowseTest extends Test {
         }
         for (Iterator iter = element.elementIterator("url"); iter.hasNext(); ) {
             Element url = (Element) iter.next();
-            urlList.add(url.getStringValue());
+            urlList.add(getStringValue(url.getTextTrim(), "www.google.com"));
         }
         count = Integer.parseInt(getStringValue(element.elementTextTrim("count"), "5"));
         interval = Integer.parseInt(getStringValue(element.elementTextTrim("test-interval"), "5"));
@@ -43,6 +43,7 @@ public class WebBrowseTest extends Test {
     @Override
     public Object call() {
         Log.info("begin web browse test");
+        boolean ret = true;
         try {
             handler = MyApp.getInstance().getMainActivityHandler();
             if (!initWebView()) {
@@ -53,19 +54,21 @@ public class WebBrowseTest extends Test {
                 for (String url : urlList) {
                     handler.sendMessage(handler.obtainMessage(MainActivity.MSG_LOAD_URL, url));
                     synchronized (WebBrowseTest.this) {
-                        wait(60000);
+                        wait(120 * 1000);
                     }
                     Thread.sleep(1000 * interval);
                 }
             }
         } catch (InterruptedException e) {
             Log.e(e);
+            ret = false;
         } catch (Exception e) {
             Log.e(e);
+            ret = false;
         }
         Log.info("end web browse test");
         handler.sendMessage(handler.obtainMessage(MainActivity.MSG_END_WEB_TEST));
-        return true;
+        return ret;
     }
 
     private void stopWait() {
@@ -76,12 +79,16 @@ public class WebBrowseTest extends Test {
 
     private boolean initWebView() {
         handler.sendMessage(handler.obtainMessage(MainActivity.MSG_NEW_WEBVIEW));
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            Log.e(e);
+        int i = 0;
+        myWebView = null;
+        while (null == myWebView && i++ < 10) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Log.e(e);
+            }
+            myWebView = MyApp.getInstance().getWebView();
         }
-        myWebView = MyApp.getInstance().getWebView();
         if (null == myWebView) {
             return false;
         }

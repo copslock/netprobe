@@ -2,13 +2,17 @@ package com.fuyong.netprobe.tests;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
+import android.widget.MediaController;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.fuyong.netprobe.MyApp;
 
@@ -49,11 +53,40 @@ public class MyWebView extends WebView {
                 }
 
             }
+
+            @Override
+            public void onShowCustomView(View view, CustomViewCallback callback) {
+                super.onShowCustomView(view, callback);
+                if (view instanceof FrameLayout) {
+                    FrameLayout frame = (FrameLayout) view;
+                    if (frame.getFocusedChild() instanceof VideoView) {
+                        VideoView video = (VideoView) frame.getFocusedChild();
+                        video.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+                            @Override
+                            public boolean onInfo(MediaPlayer mp, int what, int extra) {
+                                return false;
+                            }
+                        });
+                        video.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+
+                            }
+                        });
+                        video.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                            @Override
+                            public boolean onError(MediaPlayer mp, int what, int extra) {
+                                return false;
+                            }
+                        });
+                    }
+                }
+            }
         });
         setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;// false 显示frameset, true 不显示Frameset
+                return false;
             }
 
             @Override

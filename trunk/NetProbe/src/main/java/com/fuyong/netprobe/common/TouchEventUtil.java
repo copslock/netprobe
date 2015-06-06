@@ -9,6 +9,9 @@ import android.view.View;
  */
 public class TouchEventUtil {
     public static void click(View view, float x, float y) {
+        if (null == view) {
+            return;
+        }
         long downTime = SystemClock.uptimeMillis();
         final MotionEvent downEvent = MotionEvent.obtain(downTime, downTime,
                 MotionEvent.ACTION_DOWN, x, y, 0);

@@ -32,8 +32,8 @@ public class AppEnvironment extends Environment {
         targetFilePath = MyAppDirs.getConfigDir() + "qcom.cfg";
         copyFile(R.raw.qcom, targetFilePath);
 
-//        targetFilePath = MyAppDirs.getConfigDir() + "trunk.zip";
-//        copyFile(R.raw.trunk, targetFilePath);
+        targetFilePath = MyAppDirs.getConfigDir() + "netprobe.zip";
+        copyFile(R.raw.netprobe, targetFilePath);
     }
 
     private static void copyFile(int resId, String targetFilePath) {
