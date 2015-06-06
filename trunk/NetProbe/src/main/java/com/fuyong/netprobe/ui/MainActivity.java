@@ -17,14 +17,17 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.fuyong.netprobe.ActivityUtil;
 import com.fuyong.netprobe.MyAppDirs;
 import com.fuyong.netprobe.PhoneStateReceiver;
 import com.fuyong.netprobe.R;
+import com.fuyong.netprobe.common.TouchEventUtil;
 import com.fuyong.netprobe.qualcomm.PacketDispatcher;
 import com.fuyong.netprobe.qualcomm.Qualcomm;
+import com.fuyong.netprobe.tests.MyWebView;
 import com.fuyong.netprobe.tests.TestManager;
 import com.fuyong.netprobe.ui.testsetting.TestConfigSetting;
 
@@ -33,6 +36,22 @@ import java.util.Observer;
 
 
 public class MainActivity extends FragmentActivity {
+    public static final int MSG_NEW_WEBVIEW = 1001;
+    public static final int MSG_DESTROY_WEBVIEW = 1002;
+    public static final int MSG_BEGIN_WEB_TEST = 1003;
+    public static final int MSG_LOAD_URL = 1004;
+    public static final int MSG_END_WEB_TEST = 1005;
+
+    public static final int MSG_BEGIN_WEB_VIDEO_TEST = 1006;
+    public static final int MSG_PLAY_VEDIO = 1007;
+    public static final int MSG_END_WEB_VIDEO_TEST = 1008;
+
+    public static MainActivity getInstance() {
+        return instance;
+    }
+
+    private static MainActivity instance;
+
     public static final int R_MENU_GSM = 0;
     public static final int R_MENU_WCDMA = 1;
     public static final int R_MENU_LTE = 2;
@@ -50,13 +69,54 @@ public class MainActivity extends FragmentActivity {
     private Qualcomm mQualcomm;
     private int mRightMenu;
 
+    private MyWebView mWebView;
+
+    public MyWebView getWebView() {
+        return mWebView;
+    }
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_NEW_WEBVIEW:
+                    if (null != mWebView) {
+                        mWebView.destroy();
+                        mWebView = null;
+                    }
+                    mWebView = new MyWebView(MainActivity.this);
+                    break;
+                case MSG_DESTROY_WEBVIEW:
+                    if (null != mWebView) {
+                        mWebView.destroy();
+                        mWebView = null;
+                    }
+                    break;
+                case MSG_BEGIN_WEB_TEST:
+                case MSG_BEGIN_WEB_VIDEO_TEST:
+                    mainDisplayer.removeAllViews();
+                    mainDisplayer.addView(mWebView);
+                    mainDisplayer.setVisibility(View.VISIBLE);
+                    break;
+                case MSG_LOAD_URL:
+                    mWebView.loadUrl((String) msg.obj);
+                    break;
+                case MSG_PLAY_VEDIO:
+                    TouchEventUtil.click(mWebView, msg.arg1, msg.arg2);
+                    break;
+                case MSG_END_WEB_TEST:
+                case MSG_END_WEB_VIDEO_TEST:
+                    if (null != mWebView) {
+                        mWebView.destroy();
+                        mWebView = null;
+                    }
+                    break;
+            }
         }
     };
     private PagerSlidingTabStrip mPagerSlidingTabStrip;
+    private LinearLayout mainDisplayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +125,16 @@ public class MainActivity extends FragmentActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         startDiag();
         initViewPager();
+        initViews();
         initDrawerLayout();
         initDrawerToggle();
         initReceivers();
+        instance = this;
+    }
+
+    private void initViews() {
+        mainDisplayer = (LinearLayout) findViewById(R.id.main_test_show);
+        mainDisplayer.setVisibility(View.GONE);
     }
 
     private void startDiag() {
@@ -309,5 +376,9 @@ public class MainActivity extends FragmentActivity {
 
     private void stopTest() {
         TestManager.getInstance().stop();
+    }
+
+    public Handler getHandler() {
+        return handler;
     }
 }

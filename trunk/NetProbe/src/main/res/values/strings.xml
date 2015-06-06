@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">PHU</string>
+    <string name="app_name">Net Probe</string>
     <string name="action_contact">Contact</string>
     <string name="example">example</string>
     <string name="settings">settings</string>

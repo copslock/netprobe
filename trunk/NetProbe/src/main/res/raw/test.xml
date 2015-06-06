@@ -65,5 +65,14 @@
         <title>Hi</title>
         <subject>I am Net Probe</subject>
         <attachment></attachment>
+        <count>5</count>
+        <test-interval>10</test-interval>
     </email>
+    <video>
+        <url>http://www.youku.com</url>
+        <x>0</x>
+        <y>0</y>
+        <count>5</count>
+        <test-interval>10</test-interval>
+    </video>
 </test>

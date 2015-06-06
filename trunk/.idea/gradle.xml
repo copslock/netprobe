@@ -8,9 +8,9 @@
         <option name="gradleHome" value="$PROJECT_DIR$/../../tools/gradle-1.10" />
         <option name="modules">
           <set>
-            <option value="D:\github2\NetProbe\trunk\project" />
-            <option value="D:\github2\NetProbe\trunk\project\NetProbe" />
-            <option value="D:\github2\NetProbe\trunk\project\map" />
+            <option value="D:\git\netprobe\trunk" />
+            <option value="D:\git\netprobe\trunk\NetProbe" />
+            <option value="D:\git\netprobe\trunk\map" />
           </set>
         </option>
       </GradleProjectSettings>

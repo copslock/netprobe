@@ -22,6 +22,7 @@ import java.io.StringWriter;
 public class Log {
     public static final String MY_APP = "log";
     public static final String CRASH_REPORT = "CrashReport";
+    public static Logger logger = getLogger(MY_APP);
 
     public static Logger getLogger(String type) {
         return LogManager.getLogger(type);
@@ -84,5 +85,25 @@ public class Log {
         StringWriter stack = new StringWriter();
         e.printStackTrace(new PrintWriter(stack));
         LogManager.getLogger(MY_APP).error(stack.toString());
+    }
+
+    public static void trace(String s) {
+        logger.trace(s);
+    }
+
+    public static void debug(String s) {
+        logger.debug(s);
+    }
+
+    public static void info(String s) {
+        logger.info(s);
+    }
+
+    public static void error(String s) {
+        logger.error(s);
+    }
+
+    public static void fatal(String s) {
+        logger.fatal(s);
     }
 }

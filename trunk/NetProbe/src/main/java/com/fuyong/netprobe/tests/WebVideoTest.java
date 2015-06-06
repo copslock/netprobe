@@ -19,8 +19,10 @@ import java.util.List;
  * Time: 下午4:05
  * To change this template use File | Settings | File Templates.
  */
-public class WebBrowseTest extends Test {
+public class WebVideoTest extends Test {
     private List<String> urlList = new ArrayList<>();
+    private int x;
+    private int y;
     private int interval;
     private MyWebView myWebView;
     private int count;
@@ -28,7 +30,6 @@ public class WebBrowseTest extends Test {
 
     @Override
     public void config(Element element) {
-
         if (null == element) {
             return;
         }
@@ -36,40 +37,44 @@ public class WebBrowseTest extends Test {
             Element url = (Element) iter.next();
             urlList.add(url.getStringValue());
         }
+        x = Integer.parseInt(getStringValue(element.elementTextTrim("x"), "0"));
+        y = Integer.parseInt(getStringValue(element.elementTextTrim("y"), "0"));
         count = Integer.parseInt(getStringValue(element.elementTextTrim("count"), "5"));
         interval = Integer.parseInt(getStringValue(element.elementTextTrim("test-interval"), "5"));
     }
 
     @Override
     public Object call() {
-        Log.info("begin web browse test");
+        Log.info("begin web video test");
         try {
             handler = MyApp.getInstance().getMainActivityHandler();
             if (!initWebView()) {
                 return false;
             }
-            handler.sendMessage(handler.obtainMessage(MainActivity.MSG_BEGIN_WEB_TEST));
+            handler.sendMessage(handler.obtainMessage(MainActivity.MSG_BEGIN_WEB_VIDEO_TEST));
             for (int i = 0; i < count; ++i) {
                 for (String url : urlList) {
                     handler.sendMessage(handler.obtainMessage(MainActivity.MSG_LOAD_URL, url));
-                    synchronized (WebBrowseTest.this) {
-                        wait(60000);
+                    synchronized (WebVideoTest.this) {
+                        wait(3600 * 1000);
                     }
                     Thread.sleep(1000 * interval);
                 }
             }
+            return true;
         } catch (InterruptedException e) {
             Log.e(e);
         } catch (Exception e) {
             Log.e(e);
+        } finally {
+            handler.sendMessage(handler.obtainMessage(MainActivity.MSG_END_WEB_VIDEO_TEST));
         }
-        Log.info("end web browse test");
-        handler.sendMessage(handler.obtainMessage(MainActivity.MSG_END_WEB_TEST));
-        return true;
+        Log.info("end web video test");
+        return false;
     }
 
     private void stopWait() {
-        synchronized (WebBrowseTest.this) {
+        synchronized (WebVideoTest.this) {
             notifyAll();
         }
     }
@@ -99,7 +104,7 @@ public class WebBrowseTest extends Test {
             @Override
             public void onPageFinished(String url) {
                 Log.info("page finished: " + url);
-                stopWait();
+                handler.sendMessage(handler.obtainMessage(MainActivity.MSG_PLAY_VEDIO, x, y));
             }
 
             @Override
@@ -109,6 +114,7 @@ public class WebBrowseTest extends Test {
                 stopWait();
             }
         });
+
         return true;
     }
 }

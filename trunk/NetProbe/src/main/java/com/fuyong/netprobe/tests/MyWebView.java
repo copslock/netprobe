@@ -1,10 +1,17 @@
 package com.fuyong.netprobe.tests;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.view.MotionEvent;
+import android.view.View;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.fuyong.netprobe.MyApp;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,50 +20,85 @@ import com.fuyong.netprobe.MyApp;
  * Time: 下午4:47
  * To change this template use File | Settings | File Templates.
  */
-public class MyWebView {
-    private static MyWebView instance;
-    private WebView webView;
+public class MyWebView extends WebView {
+    private static final int LOAD_URL = 1;
+    private WebViewListener webViewListener;
 
-    private MyWebView() {
-        webView = new WebView(MyApp.getInstance().getAppContext());
-        webView.getSettings().setJavaScriptEnabled(true);// 可用JS
-        webView.setScrollBarStyle(0);// 滚动条风格，为0就是不给滚动条留空间，滚动条覆盖在网页上
-        webView.getSettings().setSupportZoom(true);// 支持缩放
-        webView.getSettings().setBuiltInZoomControls(true);// 显示放大缩小
-        webView.getSettings().setAppCacheEnabled(false);
-        webView.getSettings().setLoadsImagesAutomatically(true);
-        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+    public MyWebView(Context context) {
+        super(context);
+        initWebView();
     }
 
-    synchronized public static MyWebView getInstance() {
-        if (null == instance) {
-            instance = new MyWebView();
-        }
-        return instance;
+    private void initWebView() {
+        setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        getSettings().setJavaScriptEnabled(true);// 可用JS
+        setScrollBarStyle(0);// 滚动条风格，为0就是不给滚动条留空间，滚动条覆盖在网页上
+        getSettings().setSupportZoom(true);// 支持缩放
+        getSettings().setBuiltInZoomControls(false);// 显示放大缩小
+        getSettings().setAppCacheEnabled(false);
+        getSettings().setLoadsImagesAutomatically(true);
+        getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        getSettings().setPluginState(WebSettings.PluginState.ON);
+
+        setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                if (null != webViewListener) {
+                    webViewListener.onProgressChanged(newProgress);
+                }
+
+            }
+        });
+        setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;// false 显示frameset, true 不显示Frameset
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                if (null != webViewListener) {
+                    webViewListener.onPageStarted(url);
+                }
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                if (null != webViewListener) {
+                    webViewListener.onPageFinished(url);
+                }
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                if (null != webViewListener) {
+                    webViewListener.onReceivedError(errorCode, description, failingUrl);
+                }
+            }
+        });
     }
 
-    public void setWebChromeClient(WebChromeClient client) {
-        webView.setWebChromeClient(client);
+    void setWebViewListener(WebViewListener listener) {
+        webViewListener = listener;
     }
 
-    public void setWebViewClient(WebViewClient client) {
-        webView.setWebViewClient(client);
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        Toast.makeText(MyApp.getInstance(), "web view x:" + ev.getX() + " y:" + ev.getY(), Toast.LENGTH_LONG).show();
+        return super.dispatchTouchEvent(ev);
     }
 
-    public void loadUrl(String url) {
-        webView.loadUrl(url);
-    }
+    interface WebViewListener {
+        void onProgressChanged(int newProgress);
 
-    public void stopLoading() {
-        webView.stopLoading();
-    }
+        void onPageStarted(String url);
 
-    public void clearView() {
-        webView.clearView();
-    }
+        void onPageFinished(String url);
 
-    public WebView getWebView() {
-        return webView;
+        void onReceivedError(int errorCode, String description, String failingUrl);
     }
-
 }

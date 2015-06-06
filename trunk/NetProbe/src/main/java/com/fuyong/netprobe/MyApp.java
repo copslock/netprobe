@@ -2,9 +2,12 @@ package com.fuyong.netprobe;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
 
 import com.fuyong.netprobe.common.Log;
 import com.fuyong.netprobe.common.UncaughtExceptionHandler;
+import com.fuyong.netprobe.tests.MyWebView;
+import com.fuyong.netprobe.ui.MainActivity;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,12 +19,21 @@ import com.fuyong.netprobe.common.UncaughtExceptionHandler;
 public class MyApp extends Application {
     private static MyApp instance = null;
 
+
     public static MyApp getInstance() {
         return instance;
     }
 
     public Context getAppContext() {
         return getApplicationContext();
+    }
+
+    public Handler getMainActivityHandler() {
+        return MainActivity.getInstance().getHandler();
+    }
+
+    public MyWebView getWebView() {
+        return MainActivity.getInstance().getWebView();
     }
 
     @Override

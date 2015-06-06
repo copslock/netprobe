@@ -84,6 +84,10 @@ public class TestConfig {
                 WebBrowseTest webBrowseTest = new WebBrowseTest();
                 webBrowseTest.config(element);
                 testList.add(webBrowseTest);
+            } else if (element.getName().equals("video")) {
+                WebVideoTest webVideoTest = new WebVideoTest();
+                webVideoTest.config(element);
+                testList.add(webVideoTest);
             } else if (element.getName().equals("http-download")) {
                 HttpDownloadTest httpDownloadTest = new HttpDownloadTest();
                 httpDownloadTest.config(element);

@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/NetProbe/NetProbe.iml" filepath="$PROJECT_DIR$/NetProbe/NetProbe.iml" />
       <module fileurl="file://$PROJECT_DIR$/map/map.iml" filepath="$PROJECT_DIR$/map/map.iml" />
       <module fileurl="file://$PROJECT_DIR$/project.iml" filepath="$PROJECT_DIR$/project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/trunk.iml" filepath="$PROJECT_DIR$/trunk.iml" />
     </modules>
   </component>
 </project>
