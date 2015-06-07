@@ -1,6 +1,8 @@
 package com.fuyong.netprobe.tests;
 
+import android.net.TrafficStats;
 import android.os.Handler;
+import android.os.Process;
 
 import com.fuyong.netprobe.MyApp;
 import com.fuyong.netprobe.common.Log;
@@ -26,6 +28,7 @@ public class HTTPVideoTest extends Test {
     public static final String TAG_Y = "y";
     public static final String TAG_COUNT = "count";
     public static final String TAG_TEST_INTERVAL = "test-interval";
+    public static final long DATA_1MB = 1024 * 1024;
     private List<String> urlList = new ArrayList<>();
     private int x;
     private int y;
@@ -33,6 +36,7 @@ public class HTTPVideoTest extends Test {
     private int count;
     private Handler handler;
     private MediaPlayerListener mMediaPlayerListener;
+    private long mUidRxBytes;
 
     @Override
     public void config(Element element) {
@@ -74,6 +78,9 @@ public class HTTPVideoTest extends Test {
         } catch (InterruptedException e) {
             Log.e("HTTPVideoTest", e);
             ret = false;
+        } catch (Exception e) {
+            Log.e("HTTPVideoTest", e);
+            ret = false;
         }
         Log.info("[HTTPVideoTest] end http video test");
         handler.sendMessage(handler.obtainMessage(MainActivity.MSG_END_WEB_VIDEO_TEST));
@@ -90,6 +97,7 @@ public class HTTPVideoTest extends Test {
 
             @Override
             public void onMediaPlayerStarted() {
+                mUidRxBytes = TrafficStats.getUidRxBytes(Process.myUid());
                 Log.info("[HTTPVideoTest] media player started");
             }
 
@@ -101,11 +109,16 @@ public class HTTPVideoTest extends Test {
             @Override
             public void onMediaStopped() {
                 Log.info("[HTTPVideoTest] media player stopped");
-
             }
 
             @Override
             public void onMediaCompleted() {
+                long rxBytes = TrafficStats.getUidRxBytes(Process.myUid()) - mUidRxBytes;
+                // 判断下载流量大小，过滤广告下载
+                if (rxBytes < DATA_1MB) {
+                    Log.info("[HTTPVideoTest] video data traffic < 1MB, it is ads");
+                    return;
+                }
                 Log.info("[HTTPVideoTest] media player completed");
                 stopWait();
             }

@@ -3,30 +3,38 @@ package com.fuyong.netprobe.common;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 
 /**
  * Created by democrazy on 2015/6/7.
  */
 public class MediaPlayerListener {
-    private boolean stopLogcat;
+    private boolean mStopLogcat;
     private Listener mListener;
+    private Process mLogcatProc;
 
     public void startListen() {
-        new Thread(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                Process mLogcatProc = null;
                 BufferedReader reader = null;
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");
                 try {
-                    mLogcatProc = Runtime.getRuntime().exec(new String[]{"logcat", "com.fuyong.netprobe:D MediaPlayer:D *:S"});
+                    mLogcatProc = Runtime.getRuntime().exec(
+                            new String[]{"logcat", "com.fuyong.netprobe:D MediaPlayer:D *:S"});
                     reader = new BufferedReader(new InputStreamReader(mLogcatProc.getInputStream()));
                     String line;
                     int index;
-                    stopLogcat = false;
-                    while (!stopLogcat && (line = reader.readLine()) != null) {
-                        if (null == mListener) {
+                    mStopLogcat = false;
+                    while (!mStopLogcat) {
+                        line = reader.readLine();
+                        if (null == mListener || null == line) {
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException e) {
+                                Log.e("MediaPlayerListener", e);
+                            }
                             continue;
                         }
                         if (line.contains("MEDIA_BUFFERING_UPDATE")) {
@@ -83,15 +91,26 @@ public class MediaPlayerListener {
                             Log.e("MediaPlayerListener", e);
                         }
                         mLogcatProc.destroy();
+                        mLogcatProc = null;
                     }
                 }
             }
         }
-        ).start();
+                , "MediaPlayerListenerThread");
+        thread.start();
     }
 
     public void stopListener() {
-        stopLogcat = true;
+        mStopLogcat = true;
+        if (null != mLogcatProc) {
+            OutputStream outputStream = mLogcatProc.getOutputStream();
+            try {
+                outputStream.write(new String("exit\n\r").getBytes());
+                outputStream.flush();
+            } catch (IOException e) {
+                Log.e("MediaPlayerListener", e);
+            }
+        }
     }
 
     public void setListener(Listener listener) {

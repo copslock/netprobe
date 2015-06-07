@@ -96,9 +96,9 @@ public class MainActivity extends FragmentActivity {
                     break;
                 case MSG_BEGIN_WEB_TEST:
                 case MSG_BEGIN_WEB_VIDEO_TEST:
-                    mainDisplayer.removeAllViews();
-                    mainDisplayer.addView(mWebView);
-                    mainDisplayer.setVisibility(View.VISIBLE);
+                    mMainTestShow.removeAllViews();
+                    mMainTestShow.addView(mWebView);
+                    mMainTestShow.setVisibility(View.VISIBLE);
                     break;
                 case MSG_LOAD_URL:
                     mWebView.loadUrl((String) msg.obj);
@@ -113,6 +113,7 @@ public class MainActivity extends FragmentActivity {
                 case MSG_END_WEB_VIDEO_TEST:
                     if (null != mWebView) {
                         mWebView.destroy();
+                        mMainTestShow.removeView(mWebView);
                         mWebView = null;
                     }
                     break;
@@ -120,7 +121,7 @@ public class MainActivity extends FragmentActivity {
         }
     };
     private PagerSlidingTabStrip mPagerSlidingTabStrip;
-    private LinearLayout mainDisplayer;
+    private LinearLayout mMainTestShow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,8 +138,8 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void initViews() {
-        mainDisplayer = (LinearLayout) findViewById(R.id.main_test_show);
-        mainDisplayer.setVisibility(View.GONE);
+        mMainTestShow = (LinearLayout) findViewById(R.id.main_test_show);
+        mMainTestShow.setVisibility(View.GONE);
     }
 
     private void startDiag() {
