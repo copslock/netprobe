@@ -116,13 +116,13 @@ public class TelephonyUtil {
             return ITelephony.Stub.asInterface(binder);
 
         } catch (NoSuchMethodException e) {
-            Log.e(e);
+            Log.e("TelephonyUtil", e);
         } catch (ClassNotFoundException e) {
-            Log.e(e);
+            Log.e("TelephonyUtil", e);
         } catch (Exception e) {
-            Log.e(e);
+            Log.e("TelephonyUtil", e);
 //            try{
-//                Log.e("Sandy", "for version 4.1 or larger");
+//                Log.e("TelephonyUtil","Sandy", "for version 4.1 or larger");
 //                Intent intent = new Intent("android.intent.action.MEDIA_BUTTON");
 //                KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK);
 //                intent.putExtra("android.intent.extra.KEY_EVENT",keyEvent);

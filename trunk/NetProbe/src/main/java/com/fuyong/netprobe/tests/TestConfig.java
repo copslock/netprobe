@@ -111,20 +111,20 @@ public class TestConfig {
             xmlWriter = new XMLWriter(writer, format);
             xmlWriter.write(document);
         } catch (IOException e) {
-            Log.e(e);
+            Log.e("TestConfig", e);
         } finally {
             if (null != xmlWriter) {
                 try {
                     xmlWriter.close();
                 } catch (IOException e) {
-                    Log.e(e);
+                    Log.e("TestConfig", e);
                 }
             }
             if (null != writer) {
                 try {
                     writer.close();
                 } catch (IOException e) {
-                    Log.e(e);
+                    Log.e("TestConfig", e);
                 }
             }
         }

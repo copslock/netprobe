@@ -2,17 +2,13 @@ package com.fuyong.netprobe.tests;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
-import android.widget.MediaController;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.fuyong.netprobe.MyApp;
 
@@ -51,37 +47,35 @@ public class MyWebView extends WebView {
                 if (null != webViewListener) {
                     webViewListener.onProgressChanged(newProgress);
                 }
-
             }
-
-            @Override
-            public void onShowCustomView(View view, CustomViewCallback callback) {
-                super.onShowCustomView(view, callback);
-                if (view instanceof FrameLayout) {
-                    FrameLayout frame = (FrameLayout) view;
-                    if (frame.getFocusedChild() instanceof VideoView) {
-                        VideoView video = (VideoView) frame.getFocusedChild();
-                        video.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-                            @Override
-                            public boolean onInfo(MediaPlayer mp, int what, int extra) {
-                                return false;
-                            }
-                        });
-                        video.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mp) {
-
-                            }
-                        });
-                        video.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                            @Override
-                            public boolean onError(MediaPlayer mp, int what, int extra) {
-                                return false;
-                            }
-                        });
-                    }
-                }
-            }
+//            @Override
+//            public void onShowCustomView(View view, CustomViewCallback callback) {
+//                super.onShowCustomView(view, callback);
+//                if (view instanceof FrameLayout) {
+//                    FrameLayout frame = (FrameLayout) view;
+//                    if (frame.getFocusedChild() instanceof VideoView) {
+//                        VideoView video = (VideoView) frame.getFocusedChild();
+//                        video.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+//                            @Override
+//                            public boolean onInfo(MediaPlayer mp, int what, int extra) {
+//                                return false;
+//                            }
+//                        });
+//                        video.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                            @Override
+//                            public void onCompletion(MediaPlayer mp) {
+//
+//                            }
+//                        });
+//                        video.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+//                            @Override
+//                            public boolean onError(MediaPlayer mp, int what, int extra) {
+//                                return false;
+//                            }
+//                        });
+//                    }
+//                }
+//            }
         });
         setWebViewClient(new WebViewClient() {
             @Override
@@ -119,10 +113,16 @@ public class MyWebView extends WebView {
         webViewListener = listener;
     }
 
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        Toast.makeText(MyApp.getInstance(), "web view dispatchTouchEven x:" + ev.getX() + " y:" + ev.getY(), Toast.LENGTH_SHORT).show();
+//        return super.dispatchTouchEvent(ev);
+//    }
+
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        Toast.makeText(MyApp.getInstance(), "web view x:" + ev.getX() + " y:" + ev.getY(), Toast.LENGTH_LONG).show();
-        return super.dispatchTouchEvent(ev);
+    public boolean onTouchEvent(MotionEvent event) {
+        Toast.makeText(MyApp.getInstance(), "web view onTouchEvent x:" + event.getX() + " y:" + event.getY(), Toast.LENGTH_SHORT).show();
+        return super.onTouchEvent(event);
     }
 
     interface WebViewListener {

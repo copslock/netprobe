@@ -30,7 +30,6 @@ public class HTTPVideoTest extends Test {
     private int x;
     private int y;
     private int interval;
-    private MyWebView myWebView;
     private int count;
     private Handler handler;
     private MediaPlayerListener mMediaPlayerListener;
@@ -44,15 +43,15 @@ public class HTTPVideoTest extends Test {
             Element url = (Element) iter.next();
             urlList.add(getStringValue(url.getTextTrim(), "www.youku.com"));
         }
-        x = Integer.parseInt(getStringValue(element.elementTextTrim(TAG_X), "550"));
-        y = Integer.parseInt(getStringValue(element.elementTextTrim(TAG_Y), "450"));
+        x = Integer.parseInt(getStringValue(element.elementTextTrim(TAG_X), "0"));
+        y = Integer.parseInt(getStringValue(element.elementTextTrim(TAG_Y), "0"));
         count = Integer.parseInt(getStringValue(element.elementTextTrim(TAG_COUNT), "5"));
         interval = Integer.parseInt(getStringValue(element.elementTextTrim(TAG_TEST_INTERVAL), "5"));
     }
 
     @Override
     public Object call() {
-        Log.info("begin web video test");
+        Log.info("[HTTPVideoTest] begin http video test");
         boolean ret = true;
         try {
             handler = MyApp.getInstance().getMainActivityHandler();
@@ -67,14 +66,16 @@ public class HTTPVideoTest extends Test {
                     synchronized (HTTPVideoTest.this) {
                         wait();
                     }
+                    handler.sendMessage(handler.obtainMessage(MainActivity.MSG_STOP_LOADING));
                     Thread.sleep(1000 * interval);
                 }
             }
+            mMediaPlayerListener.stopListener();
         } catch (InterruptedException e) {
-            Log.e(e);
+            Log.e("HTTPVideoTest", e);
             ret = false;
         }
-        Log.info("end web video test");
+        Log.info("[HTTPVideoTest] end http video test");
         handler.sendMessage(handler.obtainMessage(MainActivity.MSG_END_WEB_VIDEO_TEST));
         return ret;
     }
@@ -84,45 +85,45 @@ public class HTTPVideoTest extends Test {
         mMediaPlayerListener.setListener(new MediaPlayerListener.Listener() {
             @Override
             public void onSetDataSource(String src) {
-                Log.info("play " + src);
+                Log.info("[HTTPVideoTest] play " + src);
             }
 
             @Override
             public void onMediaPlayerStarted() {
-                Log.info("media player started");
+                Log.info("[HTTPVideoTest] media player started");
             }
 
             @Override
             public void onMediaPaused() {
-                Log.info("media player paused");
+                Log.info("[HTTPVideoTest] media player paused");
             }
 
             @Override
             public void onMediaStopped() {
-                Log.info("media player stopped");
+                Log.info("[HTTPVideoTest] media player stopped");
 
             }
 
             @Override
             public void onMediaCompleted() {
-                Log.info("media player completed");
+                Log.info("[HTTPVideoTest] media player completed");
                 stopWait();
             }
 
             @Override
             public void onMediaError(int ext1, int ext2) {
-                Log.info("media player error: " + ext1 + ", " + ext2);
+                Log.info("[HTTPVideoTest] media player error: " + ext1 + ", " + ext2);
                 stopWait();
             }
 
             @Override
             public void onMediaBufferingUpdate(int process) {
-                Log.info("media player buffering: " + process);
+                Log.info("[HTTPVideoTest] media player buffering: " + process);
             }
 
             @Override
             public void onMediaSkipped() {
-                Log.info("media player skipped");
+                Log.info("[HTTPVideoTest] media player skipped");
             }
         });
         mMediaPlayerListener.startListen();
@@ -137,12 +138,12 @@ public class HTTPVideoTest extends Test {
     private boolean initWebView() {
         handler.sendMessage(handler.obtainMessage(MainActivity.MSG_NEW_WEBVIEW));
         int i = 0;
-        myWebView = null;
+        MyWebView myWebView = null;
         while (null == myWebView && i++ < 10) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                Log.e(e);
+                Log.e("HTTPVideoTest", e);
             }
             myWebView = MyApp.getInstance().getWebView();
         }
@@ -157,18 +158,18 @@ public class HTTPVideoTest extends Test {
 
             @Override
             public void onPageStarted(String url) {
-                Log.info("page started: " + url);
+                Log.info("[HTTPVideoTest] page started: " + url);
             }
 
             @Override
             public void onPageFinished(String url) {
-                Log.info("page finished: " + url);
-                handler.sendMessage(handler.obtainMessage(MainActivity.MSG_PLAY_VEDIO, x, y));
+                Log.info("[HTTPVideoTest] page finished: " + url);
+                handler.sendMessage(handler.obtainMessage(MainActivity.MSG_PLAY_VIDEO, x, y));
             }
 
             @Override
             public void onReceivedError(int errorCode, String description, String failingUrl) {
-                Log.info("page error:" + failingUrl + " error code: " + errorCode
+                Log.info("[HTTPVideoTest] page error:" + failingUrl + " error code: " + errorCode
                         + " \ndescription: " + description);
                 stopWait();
             }

@@ -59,10 +59,10 @@ public class VoiceTest extends Test implements Observer {
                 Thread.sleep(1000 * interval);
             }
         } catch (InterruptedException e) {
-            Log.e(e);
+            Log.e("VoiceTest", e);
             endCall();
         } catch (Exception e) {
-            Log.e(e);
+            Log.e("VoiceTest", e);
         } finally {
             PhoneStateReceiver.getInstance().deleteObserver(this);
         }
@@ -101,7 +101,7 @@ public class VoiceTest extends Test implements Observer {
     @Override
     public void update(Observable observable, Object data) {
         Integer state = (Integer) data;
-        switch (state.intValue()) {
+        switch (state) {
             case TelephonyManager.CALL_STATE_IDLE:
                 if (null != endCallTask) {
                     if (endCallTask.isDone()) {

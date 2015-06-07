@@ -37,7 +37,7 @@ public class Log {
     private static void initMyAppLog() {
         final Logger logger = getLogger(MY_APP);
         final DailyRollingFileAppender dailyRollingFileAppender;
-        final Layout fileLayout = new PatternLayout("%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p|%t|%C:%m%n");
+        final Layout fileLayout = new PatternLayout("%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p|%t|:%m%n");
         try {
             String filePath = MyAppDirs.getLogDir() + TelephonyUtil.getDeviceId() + "-" + MY_APP;
             dailyRollingFileAppender = new DailyRollingFileAppender(fileLayout, filePath, "yyyy-MM-dd");
@@ -51,7 +51,7 @@ public class Log {
     private static void initCrashLog() {
         final Logger logger = getLogger(CRASH_REPORT);
         final DailyRollingFileAppender dailyRollingFileAppender;
-        final Layout fileLayout = new PatternLayout("%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p|%t|%C:%m%n");
+        final Layout fileLayout = new PatternLayout("%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p|%t|:%m%n");
         try {
             String filePath = MyAppDirs.getLogDir() + TelephonyUtil.getDeviceId() + "-" + CRASH_REPORT;
             dailyRollingFileAppender = new DailyRollingFileAppender(fileLayout, filePath, "yyyy-MM-dd");
@@ -81,10 +81,10 @@ public class Log {
 //
 //        logger.addAppender(rollingFileAppender);
 //    }
-    public static void e(Throwable e) {
+    public static void e(String cls, Throwable e) {
         StringWriter stack = new StringWriter();
         e.printStackTrace(new PrintWriter(stack));
-        LogManager.getLogger(MY_APP).error(stack.toString());
+        LogManager.getLogger(MY_APP).error("[" + cls + "] " + stack.toString());
     }
 
     public static void trace(String s) {

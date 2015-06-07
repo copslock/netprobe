@@ -60,9 +60,9 @@ public class HttpDownloadTest extends Test implements Observer {
                 }
             }
         } catch (InterruptedException e) {
-            Log.e(e);
+            Log.e("HttpDownloadTest", e);
         } catch (Exception e) {
-            Log.e(e);
+            Log.e("HttpDownloadTest", e);
         } finally {
             if (null != httpDownload) {
                 httpDownload.stop();

@@ -160,7 +160,7 @@ public class Qualcomm {
         try {
             inputStream = new FileInputStream(diagFile);
         } catch (FileNotFoundException e) {
-            Log.e(e);
+            Log.e("Qualcomm", e);
             closeDiagFile(inputStream);
             return;
         }
@@ -191,7 +191,7 @@ public class Qualcomm {
             }
         } catch (IOException e) {
             closeDiagFile(inputStream);
-            Log.e(e);
+            Log.e("Qualcomm", e);
         }
     }
 
@@ -202,7 +202,7 @@ public class Qualcomm {
         try {
             inputStream.close();
         } catch (IOException e1) {
-            Log.e(e1);
+            Log.e("Qualcomm", e1);
         }
     }
 
@@ -210,7 +210,7 @@ public class Qualcomm {
         try {
             Thread.sleep(time);
         } catch (InterruptedException e) {
-            Log.e(e);
+            Log.e("Qualcomm", e);
         }
     }
 
@@ -220,7 +220,7 @@ public class Qualcomm {
         try {
             mDiagThread.join(10000);
         } catch (InterruptedException e) {
-            Log.e(e);
+            Log.e("Qualcomm", e);
         }
         try {
             if (null != mPacketDispatchTask) {
@@ -264,7 +264,7 @@ public class Qualcomm {
                             listener.update(packetData);
                         }
                     } catch (InterruptedException e) {
-                        Log.e(e);
+                        Log.e("Qualcomm", e);
                     }
                 }
                 log.info("exit packet dispatcher");
@@ -298,7 +298,9 @@ public class Qualcomm {
     }
 
     public interface CLibrary extends Library {
-        boolean Diag_LSM_Init(ByteByReference pIEnv);        CLibrary INSTANTCE = (CLibrary) Native.loadLibrary(DIAG_LIB_NAME, CLibrary.class);
+        boolean Diag_LSM_Init(ByteByReference pIEnv);
+
+        CLibrary INSTANTCE = (CLibrary) Native.loadLibrary(DIAG_LIB_NAME, CLibrary.class);
 
         boolean Diag_LSM_DeInit();
 

@@ -22,7 +22,6 @@ import java.util.List;
 public class WebBrowseTest extends Test {
     private List<String> urlList = new ArrayList<>();
     private int interval;
-    private MyWebView myWebView;
     private int count;
     private Handler handler;
 
@@ -42,7 +41,7 @@ public class WebBrowseTest extends Test {
 
     @Override
     public Object call() {
-        Log.info("begin web browse test");
+        Log.info("[WebBrowseTest] begin web browse test");
         boolean ret = true;
         try {
             handler = MyApp.getInstance().getMainActivityHandler();
@@ -56,17 +55,18 @@ public class WebBrowseTest extends Test {
                     synchronized (WebBrowseTest.this) {
                         wait(120 * 1000);
                     }
+                    handler.sendMessage(handler.obtainMessage(MainActivity.MSG_STOP_LOADING));
                     Thread.sleep(1000 * interval);
                 }
             }
         } catch (InterruptedException e) {
-            Log.e(e);
+            Log.e("WebBrowseTest", e);
             ret = false;
         } catch (Exception e) {
-            Log.e(e);
+            Log.e("WebBrowseTest", e);
             ret = false;
         }
-        Log.info("end web browse test");
+        Log.info("[WebBrowseTest] end web browse test");
         handler.sendMessage(handler.obtainMessage(MainActivity.MSG_END_WEB_TEST));
         return ret;
     }
@@ -80,12 +80,12 @@ public class WebBrowseTest extends Test {
     private boolean initWebView() {
         handler.sendMessage(handler.obtainMessage(MainActivity.MSG_NEW_WEBVIEW));
         int i = 0;
-        myWebView = null;
+        MyWebView myWebView = null;
         while (null == myWebView && i++ < 10) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                Log.e(e);
+                Log.e("WebBrowseTest", e);
             }
             myWebView = MyApp.getInstance().getWebView();
         }
@@ -100,18 +100,18 @@ public class WebBrowseTest extends Test {
 
             @Override
             public void onPageStarted(String url) {
-                Log.info("page started: " + url);
+                Log.info("[WebBrowseTest] page started: " + url);
             }
 
             @Override
             public void onPageFinished(String url) {
-                Log.info("page finished: " + url);
+                Log.info("[WebBrowseTest] page finished: " + url);
                 stopWait();
             }
 
             @Override
             public void onReceivedError(int errorCode, String description, String failingUrl) {
-                Log.info("page error:" + failingUrl + " error code: " + errorCode
+                Log.info("[WebBrowseTest] page error:" + failingUrl + " error code: " + errorCode
                         + " \ndescription: " + description);
                 stopWait();
             }

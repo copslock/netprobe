@@ -3,9 +3,7 @@ package com.fuyong.netprobe.common;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by democrazy on 2015/6/7.
@@ -71,18 +69,18 @@ public class MediaPlayerListener {
                             int begin2 = line.indexOf("ext2=") + 5;
                             int end2 = line.indexOf(",", begin2);
                             int ext2 = Integer.parseInt(line.substring(begin2, end2));
-                            mListener.onMediaError(ext1,ext2);
+                            mListener.onMediaError(ext1, ext2);
                             continue;
                         }
                     }
                 } catch (IOException e) {
-                    Log.e(e);
+                    Log.e("MediaPlayerListener", e);
                 } finally {
                     if (null != reader) {
                         try {
                             reader.close();
                         } catch (IOException e) {
-                            Log.e(e);
+                            Log.e("MediaPlayerListener", e);
                         }
                         mLogcatProc.destroy();
                     }

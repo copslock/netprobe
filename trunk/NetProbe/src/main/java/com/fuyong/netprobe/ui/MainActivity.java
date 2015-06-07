@@ -40,11 +40,12 @@ public class MainActivity extends FragmentActivity {
     public static final int MSG_DESTROY_WEBVIEW = 1002;
     public static final int MSG_BEGIN_WEB_TEST = 1003;
     public static final int MSG_LOAD_URL = 1004;
-    public static final int MSG_END_WEB_TEST = 1005;
+    public static final int MSG_STOP_LOADING = 1005;
+    public static final int MSG_END_WEB_TEST = 1006;
 
-    public static final int MSG_BEGIN_WEB_VIDEO_TEST = 1006;
-    public static final int MSG_PLAY_VEDIO = 1007;
-    public static final int MSG_END_WEB_VIDEO_TEST = 1008;
+    public static final int MSG_BEGIN_WEB_VIDEO_TEST = 1008;
+    public static final int MSG_PLAY_VIDEO = 1009;
+    public static final int MSG_END_WEB_VIDEO_TEST = 1010;
 
     public static MainActivity getInstance() {
         return instance;
@@ -102,7 +103,10 @@ public class MainActivity extends FragmentActivity {
                 case MSG_LOAD_URL:
                     mWebView.loadUrl((String) msg.obj);
                     break;
-                case MSG_PLAY_VEDIO:
+                case MSG_STOP_LOADING:
+                    mWebView.stopLoading();
+                    break;
+                case MSG_PLAY_VIDEO:
                     TouchEventUtil.click(mWebView, msg.arg1, msg.arg2);
                     break;
                 case MSG_END_WEB_TEST:

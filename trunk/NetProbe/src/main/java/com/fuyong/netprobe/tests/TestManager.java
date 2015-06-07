@@ -88,7 +88,7 @@ public class TestManager {
             mExecutorService.shutdownNow();
             changeTestState(TEST_INTERRUPT);
             onTestInterrupted();
-            Log.e(e);
+            Log.e("TestManager", e);
         }
     }
 

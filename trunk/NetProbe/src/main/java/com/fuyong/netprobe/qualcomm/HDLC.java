@@ -42,7 +42,7 @@ public class HDLC {
                 try {
                     mPacketQueue.put(onePacket);
                 } catch (InterruptedException e) {
-                    Log.e(e);
+                    Log.e("HDLC", e);
                 }
                 mDecodeLen = 0;
             } else {

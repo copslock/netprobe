@@ -121,18 +121,18 @@ public class HttpDownload {
                 executor.shutdownNow();
             }
         } catch (FileNotFoundException e) {
-            Log.e(e);
+            Log.e("HttpDownload",e);
         } catch (ExecutionException e) {
-            Log.e(e);
+            Log.e("HttpDownload",e);
         } catch (IOException e) {
-            Log.e(e);
+            Log.e("HttpDownload",e);
         } finally {
             try {
                 if (cfg != null) {
                     cfg.close();
                 }
             } catch (IOException e) {
-                Log.e(e);
+                Log.e("HttpDownload",e);
             }
         }
         boolean success = isDownloadSuc();
@@ -199,16 +199,16 @@ public class HttpDownload {
             randOut.setLength(this.fileSize);
             return file;
         } catch (FileNotFoundException e) {
-            Log.e(e);
+            Log.e("HttpDownload",e);
         } catch (IOException e) {
-            Log.e(e);
+            Log.e("HttpDownload",e);
         } finally {
             try {
                 if (randOut != null) {
                     randOut.close();
                 }
             } catch (IOException e) {
-                Log.e(e);
+                Log.e("HttpDownload",e);
             }
         }
         return null;
@@ -229,9 +229,9 @@ public class HttpDownload {
                 cfg.writeInt(task.getDownload());
             }
         } catch (FileNotFoundException e) {
-            Log.e(e);
+            Log.e("HttpDownload",e);
         } catch (IOException e) {
-            Log.e(e);
+            Log.e("HttpDownload",e);
         }
     }
 
@@ -247,7 +247,7 @@ public class HttpDownload {
         try {
             downloadCfg.createNewFile();
         } catch (IOException e) {
-            Log.e(e);
+            Log.e("HttpDownload",e);
             return false;
         }
         DataOutputStream dataOutputStream = null;
@@ -269,9 +269,9 @@ public class HttpDownload {
 
             return true;
         } catch (FileNotFoundException e) {
-            Log.e(e);
+            Log.e("HttpDownload",e);
         } catch (IOException e) {
-            Log.e(e);
+            Log.e("HttpDownload",e);
         }
         return false;
     }
@@ -314,9 +314,9 @@ public class HttpDownload {
 
             return true;
         } catch (FileNotFoundException e) {
-            Log.e(e);
+            Log.e("HttpDownload",e);
         } catch (IOException e) {
-            Log.e(e);
+            Log.e("HttpDownload",e);
         }
         return false;
     }
@@ -364,11 +364,11 @@ public class HttpDownload {
 //            conn.connect();
             return conn;
         } catch (MalformedURLException e) {
-            Log.e(e);
+            Log.e("HttpDownload",e);
         } catch (ProtocolException e) {
-            Log.e(e);
+            Log.e("HttpDownload",e);
         } catch (IOException e) {
-            Log.e(e);
+            Log.e("HttpDownload",e);
         }
         return null;
     }
@@ -429,9 +429,9 @@ public class HttpDownload {
                     }
                 }
             } catch (FileNotFoundException e) {
-                Log.e(e);
+                Log.e("HttpDownload",e);
             } catch (IOException e) {
-                Log.e(e);
+                Log.e("HttpDownload",e);
             } finally {
                 try {
                     if (inStream != null) {
@@ -441,7 +441,7 @@ public class HttpDownload {
                         randomAccessFile.close();
                     }
                 } catch (IOException e) {
-                    Log.e(e);
+                    Log.e("HttpDownload",e);
                 }
                 if (http != null) {
                     http.disconnect();
