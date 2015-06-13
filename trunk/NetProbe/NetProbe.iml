@@ -71,12 +71,18 @@
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="jna-platform" level="project" />
-    <orderEntry type="library" exported="" name="gridlayout-v7-19.1.0" level="project" />
+    <orderEntry type="library" exported="" name="libjnidispatch" level="project" />
     <orderEntry type="library" exported="" name="dom4j-1.6.1" level="project" />
+    <orderEntry type="library" exported="" name="jpcap-0.01.16" level="project" />
+    <orderEntry type="library" exported="" name="tcpdump" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="jna-min" level="project" />
+    <orderEntry type="library" exported="" name="libjnetpcap" level="project" />
     <orderEntry type="library" exported="" name="log4j-1.2.16" level="project" />
+    <orderEntry type="library" exported="" name="gridlayout-v7-19.1.0" level="project" />
+    <orderEntry type="library" exported="" name="libjpcap" level="project" />
+    <orderEntry type="library" exported="" name="libqcom" level="project" />
   </component>
 </module>
 

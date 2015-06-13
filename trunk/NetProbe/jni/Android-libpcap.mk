@@ -1,0 +1,44 @@
+LOCAL_PATH:= $(call my-dir)
+include $(CLEAR_VARS)
+
+LOCAL_SRC_FILES:=\
+	pcap/pcap-linux.c\
+	pcap/pcap-usb-linux.c\
+	pcap/pcap-can-linux.c\
+	pcap/pcap-netfilter-linux.c\
+	pcap/fad-gifc.c\
+	pcap/pcap.c\
+	pcap/inet.c\
+	pcap/gencode.c\
+	pcap/optimize.c\
+	pcap/nametoaddr.c\
+	pcap/etherent.c\
+	pcap/savefile.c\
+	pcap/sf-pcap.c\
+	pcap/sf-pcap-ng.c\
+	pcap/pcap-common.c\
+	pcap/bpf_image.c\
+	pcap/bpf_dump.c\
+	pcap/bpf/net/bpf_filter.c\
+	pcap/scanner.c\
+	pcap/grammar.c\
+	
+
+LOCAL_C_INCLUDES += \
+		$(LOCAL_PATH)/pcap
+
+LOCAL_CFLAGS:=-O2 -g
+ANDROID_CFLAGS:= -DHAVE_FSEEKO=1 -DHAVE_INTTYPES_H=1 -DHAVE_LIMITS_H=1 -DHAVE_LINUX_ETHTOOL_H=1 -DHAVE_LINUX_IF_PACKET_H=1 \
+			-DHAVE_LINUX_NET_TSTAMP_H=1 -DHAVE_LINUX_TPACKET_AUXDATA_TP_VLAN_TCI=1 -DHAVE_LINUX_TYPES_H=1 -DHAVE_LINUX_USBDEVICE_FS_H=1 \
+			-DHAVE_LINUX_WIRELESS_H=1 -DHAVE_MEMORY_H=1 -DHAVE_NETINET_ETHER_H=1 -DHAVE_NETINET_IF_ETHER_H=1 -DHAVE_NETPACKET_PACKET_H=1 \
+			-DHAVE_PATHS_H=1 -DHAVE_SNPRINTF=1 -DHAVE_SOCKADDR_STORAGE=1 -DHAVE_SOCKLEN_T=1 -DHAVE_STDINT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRERROR=1 \
+			-DHAVE_STRINGS_H=1 -DHAVE_STRING_H=1 -DHAVE_STRLCPY=1 -DHAVE_SYS_STAT_H=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_TPACKET_STATS=1 -DHAVE_UNISTD_H=1 \
+			-DHAVE_USBDEVFS_CTRLTRANSFER_BREQUESTTYPE=1 -DHAVE_VSNPRINTF=1 -DHAVE___ATTRIBUTE__=1 -DINET6=1 -DLINUX_USB_MON_DEV="\"/dev/usbmon\""  \
+			-DPACKAGE_BUGREPORT=\"\" -DPACKAGE_NAME=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_URL=\"\" -DPACKAGE_VERSION=\"\" -DPCAP_SUPPORT_CAN=1 \
+			-DPCAP_SUPPORT_NETFILTER=1 -DPCAP_SUPPORT_USB=1 -DSTDC_HEADERS=1 -D__ATTRIBUTE___FORMAT_OK=1 -Dinline=inline
+LOCAL_CFLAGS+=$(ANDROID_CFLAGS) -D_U_="__attribute__((unused))" -Dlinux -D__GLIBC__ -D_GNU_SOURCE 
+
+LOCAL_LDFLAGS +=-static
+
+LOCAL_MODULE:= libpcap
+include $(BUILD_STATIC_LIBRARY)

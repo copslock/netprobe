@@ -59,6 +59,14 @@
             android:name=".ui.testsetting.TestConfigSetting"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+
+        <service
+            android:name=".pcap.Jpcap"
+            android:process=":Jpcap">
+            <intent-filter>
+                <action android:name="com.fuyong.netprobe.service.Jpcap" />>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

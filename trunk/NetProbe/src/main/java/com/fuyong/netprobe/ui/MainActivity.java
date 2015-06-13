@@ -24,6 +24,7 @@ import com.fuyong.netprobe.ActivityUtil;
 import com.fuyong.netprobe.MyAppDirs;
 import com.fuyong.netprobe.PhoneStateReceiver;
 import com.fuyong.netprobe.R;
+import com.fuyong.netprobe.common.Log;
 import com.fuyong.netprobe.common.TouchEventUtil;
 import com.fuyong.netprobe.qualcomm.PacketDispatcher;
 import com.fuyong.netprobe.qualcomm.Qualcomm;
@@ -31,6 +32,8 @@ import com.fuyong.netprobe.tests.MyWebView;
 import com.fuyong.netprobe.tests.TestManager;
 import com.fuyong.netprobe.ui.testsetting.TestConfigSetting;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -134,7 +137,18 @@ public class MainActivity extends FragmentActivity {
         initDrawerLayout();
         initDrawerToggle();
         initReceivers();
+        startJpacp();
         instance = this;
+    }
+
+    public void startJpacp() {
+        try {
+            Process process = Runtime.getRuntime().exec("su");
+            OutputStream outputStream = process.getOutputStream();
+            outputStream.write(new String("am startservice -n com.fuyong.netprobe/.pcap.Jpcap\n").getBytes());
+        } catch (IOException e) {
+            Log.e("Jpcap", e);
+        }
     }
 
     private void initViews() {
